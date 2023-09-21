@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Select,
@@ -8,34 +8,8 @@ import {
   CardContent,
 } from "@mui/material";
 
+import api from '../../api';
 import './index.css';
-
-const issues = [
-  {
-    score: 110,
-    title: "something happened",
-    number: "1234",
-    relativeDateCreated: "7 days",
-    opener: "martinflory",
-    labels: [
-      { name: "Unison", color: "yellow" },
-      { name: "High Priority", color: "red" },
-      { name: "Mobile", color: "blue" },
-    ],
-  },
-  {
-    score: 80,
-    title: "another thing happened",
-    number: "1235",
-    relativeDateCreated: "5 days",
-    opener: "martinflory",
-    labels: [
-      { name: "Unison", color: "yellow" },
-      { name: "Low Priority", color: "green" },
-      { name: "Mobile", color: "blue" },
-    ],
-  },
-];
 
 const IssueCard = ({ issue }) => {
   const {
@@ -71,6 +45,16 @@ const IssueCard = ({ issue }) => {
 };
 const Home = () => {
   const [user, setUser] = useState("");
+  const [users, setUsers] = useState([]);
+  const [issues, setIssues] = useState([])
+  
+  useEffect(() => {
+    api.getUsers().then(({ users }) => setUsers(users));
+  }, []);
+
+  useEffect(() => {
+    api.getIssues(user).then(({ issues }) => setIssues(issues));
+  }, [user]);
 
   return (
     <Box className="content">
@@ -83,7 +67,7 @@ const Home = () => {
           onChange={(e) => setUser(e.target.value)}
         >
           <MenuItem value=""> All </MenuItem>
-          <MenuItem value="@aailenm">@aailenm</MenuItem>
+          {users.map(username => <MenuItem value={username}> {username} </MenuItem>)}
         </Select>
       </Box>
       <Box className="issues">

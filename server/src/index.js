@@ -1,36 +1,53 @@
 const express = require('express');
 const bodyParser = require('body-parser'); 
+const cors = require('cors');
+
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
-app.get('/api/orgs/:orgName', (req, res) => {
+const issues = [
+    {
+      score: 110,
+      title: "something happened",
+      number: "1234",
+      relativeDateCreated: "7 days",
+      opener: "martinflory",
+      labels: [
+        { name: "Unison", color: "yellow" },
+        { name: "High Priority", color: "red" },
+        { name: "Mobile", color: "blue" },
+      ],
+    },
+    {
+      score: 80,
+      title: "another thing happened",
+      number: "1235",
+      relativeDateCreated: "5 days",
+      opener: "martinflory",
+      labels: [
+        { name: "Unison", color: "yellow" },
+        { name: "Low Priority", color: "green" },
+        { name: "Mobile", color: "blue" },
+      ],
+    },
+  ];
+
+const users = ['aailenm', 'martinflory']
+
+app.get('/api/issues', (req, res) => {
     const path = req.path;
     console.log("Request received: ", path);
 
-    return res.send({ message: 'Not yet implemented' });
+    return res.send({ issues });
 });
 
-app.get('/api/orgs/:orgName/repos', (req, res) => {
+app.get('/api/users', (req, res) => {
     const path = req.path;
     console.log("Request received: ", path);
 
-    return res.send({ message: 'Not yet implemented' });
-});
-
-app.get('/api/orgs/:orgName/repos/:reponame/users', (req, res) => {
-    const path = req.path;
-    console.log("Request received: ", path);
-
-    return res.send({ message: 'Not yet implemented' });
-});
-
-
-app.get('/api/orgs/:orgName/repos/:reponame/issues', (req, res) => {
-    const path = req.path;
-    console.log("Request received: ", path);
-
-    return res.send({ message: 'Not yet implemented' });
+    return res.send({ users });
 });
 
 app.use((_, res) => {
