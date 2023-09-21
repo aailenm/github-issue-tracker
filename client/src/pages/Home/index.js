@@ -16,7 +16,7 @@ const IssueCard = ({ issue }) => {
     score,
     title,
     number,
-    relativeDateCreated,
+    workingDaysFromCreation,
     opener,
     labels = [],
   } = issue;
@@ -27,7 +27,7 @@ const IssueCard = ({ issue }) => {
         <Box className="body">
           <Box className="title"> {title} </Box>
           <Box className="details">
-            #{number}, opened {relativeDateCreated} days by {opener}{" "}
+            #{number}, opened {workingDaysFromCreation} days ago by {opener}{" "}
           </Box>
           <Box className="labels">
             {" "}
@@ -49,11 +49,11 @@ const Home = () => {
   const [issues, setIssues] = useState([])
   
   useEffect(() => {
-    api.getUsers().then(({ users }) => setUsers(users));
+    api.getUsers().then((users) => setUsers(users));
   }, []);
 
   useEffect(() => {
-    api.getIssues(user).then(({ issues }) => setIssues(issues));
+    api.getIssues(user).then((issues) => setIssues(issues));
   }, [user]);
 
   return (

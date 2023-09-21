@@ -11,10 +11,11 @@ const getUsers = async () => {
   });
 };
 
-const getIssues = async () => {
-    return octokit.request("GET /repos/{owner}/{repo}/issues", {
-        repo,
-        owner
-    })
-}
+const getIssues = async (byUser) => {
+  return octokit.request("GET /repos/{owner}/{repo}/issues", {
+    repo,
+    owner,
+    assignee: byUser || "*",
+  });
+};
 module.exports = { getUsers, getIssues };
