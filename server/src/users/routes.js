@@ -1,14 +1,16 @@
 const express = require("express");
+const github = require('../integrations/github');
 
 const router = express.Router();
 
-const users = ["aailenm", "martinflory"];
-
-router.get("/api/users", (req, res) => {
+router.get("/api/users", async (req, res) => {
   const path = req.path;
   console.log("Request received: ", path);
+
+  const rawUsers = await github.getUsers();
+  const users = rawUsers.data.map(user => user.login);
 
   return res.send({ users });
 });
 
-export { router as usersRouter };
+module.exports = router;
