@@ -24,7 +24,9 @@ const getUsers = () => {
   return makeGetRequest(`${BASE_URL}${USERS_PATH}`);
 };
 
-export default {
+const api = {
   getIssues,
-  getUsers,
-};
+  getUsers
+}
+
+export default api;

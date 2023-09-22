@@ -8,7 +8,7 @@ const requestHandler = (callback) => async (req, res) => {
   } catch (error) {
     console.log(`Request to ${path} failed:`, error);
 
-    return res.status(500).send({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 

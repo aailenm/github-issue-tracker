@@ -15,7 +15,7 @@ const getIssues = async (byUser) => {
   return octokit.request("GET /repos/{owner}/{repo}/issues", {
     repo,
     owner,
-    assignee: byUser || "*",
+    ...(byUser ? { assignee: byUser } : {}),
   });
 };
 module.exports = { getUsers, getIssues };
