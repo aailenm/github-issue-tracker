@@ -1,5 +1,23 @@
+:root {
+  --big-title-size: 2em;
+  --title-size: 1.5em;
+  --text-size: 1em;
+  --small-text-size: 0.7em;
+}
+
+.warning {
+  color: red;
+}
+
+.link {
+  text-decoration: none;
+}
+
 .content {
+  font-size: var(--text-size);
+
   .title {
+    font-size: var(--big-title-size);
     text-align: center;
   }
 
@@ -8,6 +26,10 @@
     gap: 1em;
     align-items: center;
     justify-content: center;
+
+    .selector {
+      width: fit-content;
+    }
   }
 
   .issues {
@@ -22,10 +44,16 @@
         gap: 2em;
 
         .score {
+          display: flex;
+          align-items: center;
+          font-size: var(--title-size);
         }
 
         .body {
+          padding: 0 1em;
+
           .title {
+            font-size: var(--title-size);
             text-align: left;
           }
 
@@ -34,6 +62,14 @@
 
           .labels {
             display: flex;
+            gap: 1em;
+            margin-top: 0.5em;
+
+            .label {
+              font-size: var(--small-text-size);
+              padding: 0.7em;
+              border-radius: 0.5em;
+            }
           }
         }
       }

@@ -8,8 +8,9 @@ import {
   CardContent,
 } from "@mui/material";
 
-import api from '../../api';
-import './index.css';
+import api from "../../api";
+import { Link, useSearchParams } from "react-router-dom";
+import "./index.css";
 
 const IssueCard = ({ issue }) => {
   const {
@@ -19,35 +20,45 @@ const IssueCard = ({ issue }) => {
     workingDaysFromCreation,
     opener,
     labels = [],
+    url,
   } = issue;
   return (
-    <Card className="issue" onClick={() => {}}>
-      <CardContent className="content">
-        <Box className="score">{score}</Box>
-        <Box className="body">
-          <Box className="title"> {title} </Box>
-          <Box className="details">
-            #{number}, opened {workingDaysFromCreation} days ago by {opener}{" "}
+    <Link to={url} className="link" target="_blank">
+      <Card className="issue">
+        <CardContent className="content">
+          <Box className={score > 100 ? `warning score` : `score`}>{score}</Box>
+          <Box className="body">
+            <Box className="title"> {title} </Box>
+            <Box className="details">
+              #{number}, opened {workingDaysFromCreation} days ago by {opener}{" "}
+            </Box>
+            <Box className="labels">
+              {" "}
+              {labels.map((label, index) => (
+                <Box
+                  className="label"
+                  key={index}
+                  sx={{ backgroundColor: `#${label.color}` }}
+                >
+                  {" "}
+                  {label.name}{" "}
+                </Box>
+              ))}{" "}
+            </Box>
           </Box>
-          <Box className="labels">
-            {" "}
-            {labels.map((label, index) => (
-              <Box className="label" key={index}>
-                {" "}
-                {label.name}{" "}
-              </Box>
-            ))}{" "}
-          </Box>
-        </Box>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </Link>
   );
 };
+
 const Home = () => {
-  const [user, setUser] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const user = searchParams.get("who") || "";
   const [users, setUsers] = useState([]);
-  const [issues, setIssues] = useState([])
-  
+  const [issues, setIssues] = useState([]);
+
   useEffect(() => {
     api.getUsers().then((users) => setUsers(users));
   }, []);
@@ -58,16 +69,19 @@ const Home = () => {
 
   return (
     <Box className="content">
-      <Box className="title"> Welcome to Github Issue Tracker App</Box>
+      <Box className="title"> Welcome to the Github Issue Tracker</Box>
       <Box className="user-select">
         <InputLabel> Show issues assigned to: </InputLabel>
         <Select
           value={user}
           displayEmpty
-          onChange={(e) => setUser(e.target.value)}
+          onChange={(e) => setSearchParams({ who: e.target.value })}
+          className="selector"
         >
           <MenuItem value=""> All </MenuItem>
-          {users.map(username => <MenuItem value={username}> {username} </MenuItem>)}
+          {users.map((username) => (
+            <MenuItem value={username}> {username} </MenuItem>
+          ))}
         </Select>
       </Box>
       <Box className="issues">
