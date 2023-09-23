@@ -10,7 +10,7 @@ const get = async ({ query }) => {
 
   const attributes = ["title", "number", "labels"];
   const rawIssues = await github.getIssues(byUser);
-  const issuesWithCalculatedValues = rawIssues.data.map((issue) => ({
+  const issuesWithCalculatedValues = rawIssues.map((issue) => ({
     ..._.pick(issue, attributes),
     score: calculateScore(issue),
     workingDaysFromCreation: calculateWorkingDays(issue.created_at),
