@@ -5,13 +5,9 @@ const ISSUES_PATH = "/issues";
 const USERS_PATH = "/users";
 
 const extractData = (res) => res.data;
-const handleError = (error) => {
-  console.log("Something went wrong: ", error);
-  return [];
-};
 
 const makeGetRequest = (url) => {
-  return axios.get(url).then(extractData).catch(handleError);
+  return axios.get(url).then(extractData);
 };
 
 const getIssues = (user) => {

@@ -6,7 +6,7 @@ const repo = process.env.REPO_NAME;
 const owner = process.env.ORGANIZATION;
 
 /**
- * Retrieve a list of users that belongs to an organization
+ * Retrieve a list of users that have been assigned to any issues in a repository
  * @returns A list of github users
  * @throws If the API rate limit is exceeded or if there are network issues. Currently, rate limits are 60 requests per hour
  */
@@ -29,7 +29,6 @@ const getIssues = async (byUser) => {
     owner,
     ...(byUser ? { assignee: byUser } : {}),
     per_page: 100,
-    request: { retries: 3, retryAfter: 2 },
   });
 };
 module.exports = { getUsers, getIssues };
