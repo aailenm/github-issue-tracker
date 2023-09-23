@@ -16,6 +16,7 @@ const getIssues = async (byUser) => {
     repo,
     owner,
     ...(byUser ? { assignee: byUser } : {}),
+    per_page: 100,
   });
 };
 module.exports = { getUsers, getIssues };

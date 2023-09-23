@@ -1,5 +1,5 @@
 const _ = require("lodash");
-
+const { calculateWorkingDays } = require("../helpers/workingDaysCalculator");
 const UNSCORED = "unscored";
 
 const PRIORITY_LABEL_WEIGHT = {
@@ -10,7 +10,7 @@ const PRIORITY_LABEL_WEIGHT = {
   "Very Low Priority": 1,
 };
 
-const defaultScoreCalculation = (issue) => {
+const rotundaScorer = (issue) => {
   const { labels = [] } = issue;
   if (_.isEmpty(labels)) {
     return UNSCORED;
@@ -30,24 +30,12 @@ const defaultScoreCalculation = (issue) => {
   return weight * workingDays;
 };
 
-const calculateWorkingDays = (date) => {
-  if (!date) throw Error("Date not provided");
-
-  const today = new Date();
-  const pastDate = new Date(date);
-
-  let counter = 0;
-
-  while (today >= pastDate) {
-    if (pastDate.getDay() <= 5 && pastDate.getDay() >= 1) {
-      counter += 1;
-    }
-    pastDate.setDate(pastDate.getDate() + 1);
+const createScorer = (strategy) => (issue) => {
+  if (strategy) {
+    return strategy(issue);
   }
-  return counter;
+
+  return rotundaScorer(issue);
 };
 
-module.exports = {
-  calculateWorkingDays,
-  defaultScoreCalculation,
-};
+module.exports = createScorer;
