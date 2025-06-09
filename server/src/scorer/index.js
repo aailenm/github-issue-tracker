@@ -20,11 +20,12 @@ const rotundaScorer = (issue) => {
     Object.keys(PRIORITY_LABEL_WEIGHT).includes(label.name);
   const toWeight = (label) => PRIORITY_LABEL_WEIGHT[label.name] || 0;
 
-  const weight = _.max(labels.filter(byPriority).map(toWeight));
-
-  if (!weight) {
+  const priorityWeights = labels.filter(byPriority).map(toWeight);
+  if (priorityWeights.length === 0) {
     return UNSCORED;
   }
+
+  const weight = _.max(priorityWeights);
 
   const workingDays = calculateWorkingDays(issue.created_at);
   return weight * workingDays;
